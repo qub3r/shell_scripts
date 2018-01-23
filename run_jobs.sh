@@ -91,7 +91,7 @@ main() {
       if [ "$EXECUTE" == "true" ]; then
         eval "$RUN_CMD"
       else
-        log "info" "$RUN_CMD\n"
+        log "info" "command to be executed $RUN_CMD"
       fi
       INDEX="$(($INDEX + 1))"
     fi
