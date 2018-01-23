@@ -56,7 +56,7 @@ EOF
 
 main() {
   [ "$1" == "dev" ] && shift 1 && set -x
-	parse_args "$@"
+  parse_args "$@"
 
   declare -a QUEUE
   local INDEX="0"
@@ -104,19 +104,19 @@ main() {
 }
 
 parse_args() {
-	while [ -n "$1" ]; do
-		case "$1" in
-			-c|--command) RUN_COMMAND="$2" && shift 2 ;;
-			-e|--execute) EXECUTE="true" && shift 1 ;;
-			-h|--help) printf "\n%s\n" "$USAGE" && end 0 ;;
-			-i|--intput-directory) 
-				INPUT_DIRECTORY="$2"
-				[ "${INPUT_DIRECTORY: -1}" == "/" ] && INPUT_DIRECTORY="${INPUT_DIRECTORY:0: -1}"
-				[ ! -d "$INPUT_DIRECTORY" ] && log "error" "the input directory $INPUT_DIRECTORY does not exist!" && end 2
-				shift 2
-				;;
-			-j|--jobs) DESIRED_JOBS="$2" && shift 2 ;;
-			-l|--log-level) 
+  while [ -n "$1" ]; do
+    case "$1" in
+      -c|--command) RUN_COMMAND="$2" && shift 2 ;;
+      -e|--execute) EXECUTE="true" && shift 1 ;;
+      -h|--help) printf "\n%s\n" "$USAGE" && end 0 ;;
+      -i|--intput-directory) 
+        INPUT_DIRECTORY="$2"
+        [ "${INPUT_DIRECTORY: -1}" == "/" ] && INPUT_DIRECTORY="${INPUT_DIRECTORY:0: -1}"
+        [ ! -d "$INPUT_DIRECTORY" ] && log "error" "the input directory $INPUT_DIRECTORY does not exist!" && end 2
+        shift 2
+        ;;
+      -j|--jobs) DESIRED_JOBS="$2" && shift 2 ;;
+      -l|--log-level) 
         case "$2" in
           debug)    LOG_LEVEL="4" && shift 2 ;;
           info)     LOG_LEVEL="3" && shift 2 ;;
@@ -125,18 +125,18 @@ parse_args() {
           critical) LOG_LEVEL="0" && shift 2 ;;
           *)        LOG_LEVEL="2" && shift 2 ;;
         esac
-				;;
-			-o|--output-directory)
-				OUTPUT_DIRECTORY="$2"
-				[ "${OUTPUT_DIRECTORY: -1}" == "/" ] && OUTPUT_DIRECTORY="${OUTPUT_DIRECTORY:0: -1}"
-				[ ! -d "$OUTPUT_DIRECTORY" ] && log "error" "the output directory $OUTPUT_DIRECTORY does not exist!" && end 2
-				shift 2
-				;;
-			*) log "error" "the $1 flag is not recognised." && end 2 ;;
-		esac
-	done
-	[ -z "$RUN_COMMAND" ] && log "error" "the -c|--command option is required!" && end 2
-	[ -z "$INPUT_DIRECTORY" ] && log "error" "the -i|--input-directory option is required!" && end 2
+        ;;
+      -o|--output-directory)
+        OUTPUT_DIRECTORY="$2"
+        [ "${OUTPUT_DIRECTORY: -1}" == "/" ] && OUTPUT_DIRECTORY="${OUTPUT_DIRECTORY:0: -1}"
+        [ ! -d "$OUTPUT_DIRECTORY" ] && log "error" "the output directory $OUTPUT_DIRECTORY does not exist!" && end 2
+        shift 2
+        ;;
+      *) log "error" "the $1 flag is not recognised." && end 2 ;;
+    esac
+  done
+  [ -z "$RUN_COMMAND" ] && log "error" "the -c|--command option is required!" && end 2
+  [ -z "$INPUT_DIRECTORY" ] && log "error" "the -i|--input-directory option is required!" && end 2
   DESIRED_JOBS="${DESIRED_JOBS:-1}"
   LOG_LEVEL="${LOG_LEVEL:-2}"
   OUTPUT_DIRECTORY="${OUTPUT_DIRECTORY:-/dev/null}"
@@ -167,24 +167,24 @@ progress_bar() {
 }
 
 log() {
-	case "$1" in
-		debug)     [ "$LOG_LEVEL" -ge "4" ] && LOG_TYPE="DEBUG"     && LOG_MESSAGE="$2" ;;
-		info)      [ "$LOG_LEVEL" -ge "3" ] && LOG_TYPE="INFO"      && LOG_MESSAGE="$2" ;;
-		warning)   [ "$LOG_LEVEL" -ge "2" ] && LOG_TYPE="WARNING"   && LOG_MESSAGE="$2" ;;
-		error)     [ "$LOG_LEVEL" -ge "1" ] && LOG_TYPE="ERROR"     && LOG_MESSAGE="$2" ;;
-		critical)  [ "$LOG_LEVEL" -ge "0" ] && LOG_TYPE="CRITICAL"  && LOG_MESSAGE="$2" ;;
-		*)         [ "$LOG_LEVEL" -ge "3" ] && LOG_TYPE="INFO"      && LOG_MESSAGE="$2" ;;
-	esac
-	[ -n "$LOG_MESSAGE" ] && printf "%s %s: %s\n" "$(date -u +%Y-%m-%d:%H:%M:%S.%N)" "$LOG_TYPE" "$LOG_MESSAGE" >> "/tmp/$(basename $0).log"
+  case "$1" in
+    debug)     [ "$LOG_LEVEL" -ge "4" ] && LOG_TYPE="DEBUG"     && LOG_MESSAGE="$2" ;;
+    info)      [ "$LOG_LEVEL" -ge "3" ] && LOG_TYPE="INFO"      && LOG_MESSAGE="$2" ;;
+    warning)   [ "$LOG_LEVEL" -ge "2" ] && LOG_TYPE="WARNING"   && LOG_MESSAGE="$2" ;;
+    error)     [ "$LOG_LEVEL" -ge "1" ] && LOG_TYPE="ERROR"     && LOG_MESSAGE="$2" ;;
+    critical)  [ "$LOG_LEVEL" -ge "0" ] && LOG_TYPE="CRITICAL"  && LOG_MESSAGE="$2" ;;
+    *)         [ "$LOG_LEVEL" -ge "3" ] && LOG_TYPE="INFO"      && LOG_MESSAGE="$2" ;;
+  esac
+  [ -n "$LOG_MESSAGE" ] && printf "%s %s: %s\n" "$(date -u +%Y-%m-%d:%H:%M:%S.%N)" "$LOG_TYPE" "$LOG_MESSAGE" >> "/tmp/$(basename $0).log"
 }
 
 end() {
-	case "$1" in
-		0) exit 0 ;; # exit successfully
-		1) exit 1 ;; # exit with internal error
-		2) printf "\n%s\n" "$USAGE" && exit 2 ;; # exit with user error
-		*) exit 1 ;; # default exit with internal error
-	esac
+  case "$1" in
+    0) exit 0 ;; # exit successfully
+    1) exit 1 ;; # exit with internal error
+    2) printf "\n%s\n" "$USAGE" && exit 2 ;; # exit with user error
+    *) exit 1 ;; # default exit with internal error
+  esac
 }
 
 main "$@"
