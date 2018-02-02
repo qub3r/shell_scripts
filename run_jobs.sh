@@ -34,6 +34,10 @@ options:
     need to kill the script. Use with caution.
     REQUIRED=False  DEFAULT=1
 
+  -l|--log-level "(debug|info|warning|error|critical)"
+    Only output log data >= the log-level specified.
+    REQUIRED=False  DEFAULT=warning
+
   -o|--output-directory "/full/path/to/directory"
     The directory to place output from the 
     executed command.
@@ -117,7 +121,7 @@ parse_args() {
         ;;
       -j|--jobs) DESIRED_JOBS="$2" && shift 2 ;;
       -l|--log-level) 
-        case "$2" in
+        case "$(printf "$2" | tr "[:upper:]" "[:lower:]")" in
           debug)    LOG_LEVEL="4" && shift 2 ;;
           info)     LOG_LEVEL="3" && shift 2 ;;
           warning)  LOG_LEVEL="2" && shift 2 ;;
