@@ -143,7 +143,6 @@ parse_args() {
   [ -z "$INPUT_DIRECTORY" ] && log "error" "the -i|--input-directory option is required!" && end 2
   DESIRED_JOBS="${DESIRED_JOBS:-1}"
   LOG_LEVEL="${LOG_LEVEL:-2}"
-  OUTPUT_DIRECTORY="${OUTPUT_DIRECTORY:-/dev/null}"
 }
 
 progress_bar() {
