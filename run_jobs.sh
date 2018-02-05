@@ -147,16 +147,16 @@ parse_args() {
 
 progress_bar() {
   if [ "$1" == "done" ]; then
-    spinner="X"
-    percent_done="100"
-    progress_message="Done!"
+    local spinner="X"
+    local percent_done="100"
+    local progress_message="Done!"
   else
-    spinner='/-\|'
-    percent_done="${1:-0}"
-    progress_message="$percent_done %"
+    local spinner='/-\|'
+    local percent_done="${1:-0}"
+    local progress_message="$percent_done %"
   fi
 
-  percent_none="$(( 100 - $percent_done ))"
+  local percent_none="$(( 100 - $percent_done ))"
   [ "$percent_done" -gt 0 ] && local done_bar="$(printf '#%.0s' $(seq -s ' ' 1 $percent_done))"
   [ "$percent_none" -gt 0 ] && local none_bar="$(printf '~%.0s' $(seq -s ' ' 1 $percent_none))"
 
@@ -171,14 +171,14 @@ progress_bar() {
 
 log() {
   case "$1" in
-    debug)     [ "$LOG_LEVEL" -ge "4" ] && LOG_TYPE="DEBUG"     && LOG_MESSAGE="$2" ;;
-    info)      [ "$LOG_LEVEL" -ge "3" ] && LOG_TYPE="INFO"      && LOG_MESSAGE="$2" ;;
-    warning)   [ "$LOG_LEVEL" -ge "2" ] && LOG_TYPE="WARNING"   && LOG_MESSAGE="$2" ;;
-    error)     [ "$LOG_LEVEL" -ge "1" ] && LOG_TYPE="ERROR"     && LOG_MESSAGE="$2" ;;
-    critical)  [ "$LOG_LEVEL" -ge "0" ] && LOG_TYPE="CRITICAL"  && LOG_MESSAGE="$2" ;;
-    *)         [ "$LOG_LEVEL" -ge "3" ] && LOG_TYPE="INFO"      && LOG_MESSAGE="$2" ;;
+    debug)     [ "$LOG_LEVEL" -ge "4" ] && local log_type="DEBUG"     && local log_message="$2" ;;
+    info)      [ "$LOG_LEVEL" -ge "3" ] && local log_type="INFO"      && local log_message="$2" ;;
+    warning)   [ "$LOG_LEVEL" -ge "2" ] && local log_type="WARNING"   && local log_message="$2" ;;
+    error)     [ "$LOG_LEVEL" -ge "1" ] && local log_type="ERROR"     && local log_message="$2" ;;
+    critical)  [ "$LOG_LEVEL" -ge "0" ] && local log_type="CRITICAL"  && local log_message="$2" ;;
+    *)         [ "$LOG_LEVEL" -ge "3" ] && local log_type="INFO"      && local log_message="$2" ;;
   esac
-  [ -n "$LOG_MESSAGE" ] && printf "%s %s: %s\n" "$(date -u +%Y-%m-%d:%H:%M:%S.%N)" "$LOG_TYPE" "$LOG_MESSAGE" >> "/tmp/$(basename $0).log"
+  [ -n "$log_message" ] && printf "%s %s: %s\n" "$(date -u +%Y-%m-%d:%H:%M:%S.%N)" "$log_type" "$log_message" >> "/tmp/$(basename $0).log"
 }
 
 end() {
