@@ -28,10 +28,7 @@ options:
     REQUIRED=True  DEFAULT=None
 
   -j|--jobs "INTEGER"
-    The number of jobs you want to run in the
-    background. WARNING: runing jobs in the background
-    makes it more difficult to kill them if you
-    need to kill the script. Use with caution.
+    The number of jobs you want to run in the background. 
     REQUIRED=False  DEFAULT=1
 
   -l|--log-level "(debug|info|warning|error|critical)"
