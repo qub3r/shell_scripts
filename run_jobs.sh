@@ -59,12 +59,7 @@ main() {
   [ "$1" == "dev" ] && shift 1 && set -x
   parse_args "$@"
 
-  declare -a QUEUE
-  local INDEX="0"
-  for ITEM in $(ls "$INPUT_DIRECTORY"); do
-    QUEUE[$INDEX]="$ITEM"
-    INDEX="$(($INDEX + 1))"
-  done
+  QUEUE=( $(ls "$INPUT_DIRECTORY") )
 
   local INDEX="0"
   # stay in the while loop as long as there are still jobs in the
@@ -112,7 +107,6 @@ parse_args() {
       -h|--help) printf "\n%s\n" "$USAGE" && end 0 ;;
       -i|--intput-directory) 
         INPUT_DIRECTORY="$2"
-        [ "${INPUT_DIRECTORY: -1}" == "/" ] && INPUT_DIRECTORY="${INPUT_DIRECTORY:0: -1}"
         [ ! -d "$INPUT_DIRECTORY" ] && log "error" "the input directory $INPUT_DIRECTORY does not exist!" && end 2
         shift 2
         ;;
@@ -129,7 +123,6 @@ parse_args() {
         ;;
       -o|--output-directory)
         OUTPUT_DIRECTORY="$2"
-        [ "${OUTPUT_DIRECTORY: -1}" == "/" ] && OUTPUT_DIRECTORY="${OUTPUT_DIRECTORY:0: -1}"
         [ ! -d "$OUTPUT_DIRECTORY" ] && log "error" "the output directory $OUTPUT_DIRECTORY does not exist!" && end 2
         shift 2
         ;;
