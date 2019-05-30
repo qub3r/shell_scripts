@@ -25,7 +25,13 @@ print_message() {
     # process and set defaults
     : ${MESSAGE:?print_message() requires the -m or -M flag}
     local PAD_CHARACTER=${PAD_CHARACTER:-#}
-    local PAD_LENGTH=${PAD_LENGTH:-80}
+    if [ ! "$PAD_LENGTH" ] ; then
+        if [ "$(tput cols)" -gt 120 ] ; then
+            PAD_LENGTH=120
+        else
+            PAD_LENGTH="$(tput cols)"
+        fi
+    fi
 
     # construct message
     local LPAD_LENGTH=$(( ( $PAD_LENGTH - ${#MESSAGE} ) / 2 ))
